@@ -27,11 +27,11 @@
         <section id="hero" class="hero w-100 h-100 p-3 mx-auto text-center d-flex
         justify-content-center align-items-center text-white">
             <main>
-                <h4>Kepada Bapak/Ibu/Saudara/i,</h4>
+                <h4>Kepada <span>Bapak/Ibu/Saudara/i, </span></h4>
                 <h1>Undangan</h1>
                 <p>Akan melangsungkan resepsi pernikahan dalam:</p>
                 <div class="simply-countdown"></div>
-                <a href="#undangan" class="btn btn-lg mt-4" onclick="enableScroll()">Lihat Undangan</a>
+                <a href="#home" class="btn btn-lg mt-4" onclick="enableScroll()">Lihat Undangan</a>
             </main>
         </section>
         <!-- Hero End -->
@@ -117,7 +117,15 @@
                         <h2>Informasi Acara</h2>
                         <p class="alamat">Alamat : Batam Marriott Hotel Harbour Bay. <br>
                             Jalan Duyung, Kel Sungai Jodoh, Kec Batu Ampar, Batam Riau</p>
-                        <a href="https://www.bing.com/maps?osid=dcef227d-79cb-4ef8-90ef-986d0d4b54e1&cp=1.154227~103.996496&lvl=17&pi=0&imgid=66b53b11-7fa9-4e4e-a007-ff57dcdb6204&v=2&sV=2&form=S00027" 
+
+                            <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3989.008467616
+                            2355!2d103.9962708759019!3d1.1544401988345172!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f1
+                            3.1!3m3!1m2!1s0x31d98b0644b4c65f%3A0xd14481401ad51e09!2sBatam%20Marriott%20Hotel%2
+                            0Harbour%20Bay!5e0!3m2!1sid!2sid!4v1715581860429!5m2!1sid!2sid" width="100%" 
+                            height="250" style="border:0;" allowfullscreen="" loading="lazy" 
+                            referrerpolicy="no-referrer-when-downgrade"></iframe>
+
+                        <a href="https://maps.app.goo.gl/sLoNcG27eXhXv4cN7" 
                         target="_blank" class="btn btn-light btn-sm my-4">Klik untuk membuka peta</a>
                         <p class="description">Diharapkan untuk tidak salah alamat dan tanggal. Manakala tiba di tujuan namun tidak
                             ada tanda-tanda sedang dilangsungkan pernikahan, bisa jadi Anda salah jadwal, atau salah tempat.
@@ -319,6 +327,30 @@
                         <button class="btn btn-primary">Kirim</button>
                     </div>
                 </form>
+
+                <div class="row justify-content-center mt-5">
+                    <div class="col-md-6">
+                        <div id="disqus_thread"></div>
+                        <script>
+                            /**
+                            *  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+                            *  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables    */
+                            /*
+                            var disqus_config = function () {
+                            this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
+                            this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+                            };
+                            */
+                            (function() { // DON'T EDIT BELOW THIS LINE
+                            var d = document, s = d.createElement('script');
+                            s.src = 'https://undangan-wedding-9.disqus.com/embed.js';
+                            s.setAttribute('data-timestamp', +new Date());
+                            (d.head || d.body).appendChild(s);
+                            })();
+                        </script>
+                        <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+                    </div>
+                </div>
             </div>
         </section>
         <!-- Rsvp End -->
@@ -378,6 +410,18 @@
         </footer>
         <!-- Footer End -->
 
+        <!-- Audio Start -->
+        <div id="audio-container">
+            <audio id="song" autoplay loop>
+                <source src="audio/musik.mp3" type="audio/mp3">
+            </audio>
+
+            <div class="audio-icon-wrapper" style="display: none;">
+                <i class="bi bi-disc"></i>
+            </div>
+        </div>
+        <!-- Audio End -->
+
 
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
         <script src="https://cdn.jsdelivr.net/npm/bs5-lightbox@1.8.3/dist/index.bundle.min.js"></script>
@@ -411,6 +455,11 @@
             });
 
             const rootElement = document.querySelector(":root");
+            const audioIconWrapper = document.querySelector('.audio-icon-wrapper');
+            const audioIcon = document.querySelector('.audio-icon-wrapper i');
+            const song = document.querySelector('#song');
+            let isPlaying = false;
+
             function disableScroll() {
                 scrollTop = window.pageYOffset || document.documentElement.scrollTop;
                 scrollLeft = window.pageXOffset || document.documentElement.scrollLeft;
@@ -425,12 +474,36 @@
             function enableScroll() {
                 window.onscroll = function() {}
                 rootElement.style.scrollBehavior = 'smooth';
-                localStorage.setItem('opened', 'true');
+                // localStorage.setItem('opened', 'true');
+
+                playAudio();
+            }
+
+            function playAudio() {
+                song.volume = 0.5;
+                audioIconWrapper.style.display = 'flex';
+                song.play();
+                isPlaying = true;
+            }
+
+            audioIconWrapper.onclick = function() {
+                if(isPlaying) {
+                    song.pause();
+                    audioIcon.classList.remove('bi-disc');
+                    audioIcon.classList.add('bi-pause-circle');
+                } else {
+                    song.play();
+                    audioIcon.classList.remove('bi-pause-circle');
+                    audioIcon.classList.add('bi-disc');
+                }
+
+                isPlaying = !isPlaying;
             }
             
-            if (!localStorage.getItem('opened')) {
-                disableScroll();
-            }
+            // if (!localStorage.getItem('opened')) {
+            //     disableScroll();
+            // }
+            disableScroll();
 
             window.addEventListener("load", function() {
                 const form = document.getElementById('form-wedding');
@@ -447,6 +520,16 @@
                     })
                 });
             });
+
+            // Ambil URL
+            const urlParams = new URLSearchParams(window.location.search);
+            const nama = urlParams.get('n') || '';
+            const pronoun = urlParams.get('p') || 'Bapak/Ibu/Saudara/i';
+
+            const namaContainer= document.querySelector('.hero h4 span');
+            namaContainer.innerText = `${pronoun} ${nama},` .replace(/ ,$/, ',');
+
+            document.querySelector('#nama').value = nama;
         </script>
     </body>
 </html>
